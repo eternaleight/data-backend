@@ -3,8 +3,11 @@ const mongoose = require("mongoose")
 const app = express()
 const dotenv = require("dotenv")
 dotenv.config()
-const cryptoJS = require("crypt-js")
+const cryptJS = require("crypt-js")
 const User = require("./src/v1/models/user")
+const jwt = require("jsonwebtoken")
+
+app.use(express.json())
 
 //DB接続
 try {
@@ -14,20 +17,23 @@ try {
   console.log(error)
 }
 
-app.get("/", (req,res) => {
-  res.send("hello express")
-})
 
 //ユーザー新規登録API
-app.post("/register", async(req,res) => {
+app.post("/register", async(req, res) => {
   //パスワードの受け取り
   const password = req.body.password
   try {
     //パスワードの暗号化
-    req.body.password = cryptoJS.AES.encrypt(password, process.env.SECRET_KEY)
+    req.body.password = cryptJS.AES.encrypt(password, process.env.SECRET_KEY)
     //パスワードの新規作成
     const user = await User.create(req.body)
-  } catch {
+    //JWTの発行
+    const token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET_KEY, {
+      expiresIn: "24h",
+    })
+    return res.status(200).json({ user, token })
+  } catch (err) {
+    return res.status(500).json(err)
   }
 })
 
@@ -36,6 +42,9 @@ app.post("/register", async(req,res) => {
 
 // app.delete("/delete"(req,res) => {
 // })
+app.get("/", (res) => {
+  res.send("hello express")
+})
 
 const PORT = 5001
 app.listen(PORT, () => {
