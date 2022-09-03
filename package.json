@@ -11,8 +11,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "crypt-js": "^1.0.4",
+    "crypto-js": "^4.1.1",
     "express": "^4.18.1",
+    "express-validator": "^6.14.2",
     "jsonwebtoken": "^8.5.1",
     "nodemon": "^2.0.19",
     "prettier": "^2.7.1"
