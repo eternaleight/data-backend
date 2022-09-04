@@ -3,9 +3,9 @@ const User = require("../models/user")
 
 //クライアントから渡されたJWTが正常か検証
 const tokenDecode = (req) => {
-  const bearerHeder = req.headers["authorization"]
-  if (bearerHeder) {
-    const bearer = bearerHeder.split(" ")[1]
+  const bearerHeader = req.headers["authorization"]
+  if (bearerHeader) {
+    const bearer = bearerHeader.split(" ")[1]
     try {
       const decodedToken = jwt.verify(bearer, process.env.TOKEN_SECRET_KEY)
       return decodedToken
@@ -22,13 +22,13 @@ exports.verifyToken = async (req, res, next) => {
   const tokenDecoded = tokenDecode(req)
   if (tokenDecoded) {
     //そのJWTと一致するユーザーを探してくる
-    const user = await User.findById(tokenDecode.id)
+    const user = await User.findById(tokenDecoded.id)
     if (!user) {
       return res.status(401).json("権限がありません")
     }
     req.user = user
     next()
   } else {
-      return res.status(401).json("権限がありません")
+    return res.status(401).json("権限がありません")
   }
 }
