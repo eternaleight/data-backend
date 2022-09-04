@@ -47,12 +47,12 @@ exports.login = async (req, res) => {
       })
     }
     //パスワードが合っているか照合する
-    const descryptedPassword = CryptoJS.AES.decrypt(
+    const descryptedPassword = cryptoJS.AES.decrypt(
       user.password,
       process.env.SECRET_KEY
-    )
+    ).toString(cryptoJS.enc.Utf8)
     if (descryptedPassword !== password) {
-      res.status(401).json({
+      return res.status(401).json({
         errors: {
           param: "password",
           message: "パスワードが無効です",

@@ -3,6 +3,7 @@ const dotenv = require("dotenv")
 dotenv.config()
 const { body } = require("express-validator")
 const userController = require("../controllers/user")
+const tokenHandler = require("../handlers/tokenHandlers")
 
 const User = require("../models/user")
 const validation = require("../handlers/validation")
@@ -29,6 +30,11 @@ router.post(
   userController.register
 )
 
+//JWT認証API
+router.post("/verify-token", tokenHandler.verifyToken, (req, res) => {
+  return res.status(200).json({ user: req.user })
+})
+
 //ログイン用API
 router.post(
   "/login",
@@ -39,6 +45,7 @@ router.post(
     .isLength({ min: 8 })
     .withMessage("パスワードは8文字以上である必要があります"),
   validation.validate,
+  userController.login
 )
 
 module.exports = router
