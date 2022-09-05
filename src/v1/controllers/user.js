@@ -12,10 +12,10 @@ exports.register = async (req, res) => {
     req.body.password = cryptoJS.AES.encrypt(password, process.env.SECRET_KEY)
     //パスワードの新規作成
     const user = await User.create(req.body)
-    // {
-    // "user": {
+    // {"user": {
     //     "username": "eternaleight",
     //     "password": "U2FsdGVkX18ePcvewerc1lpwgLgDrkj0mggOeNbgf2M=",
+    //     "confirmPassword"
     //     "_id": "631368fcc57d30e44aa33913",
     //     "__v": 0
     // },

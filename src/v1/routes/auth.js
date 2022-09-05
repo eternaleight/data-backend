@@ -3,10 +3,12 @@ const dotenv = require("dotenv")
 dotenv.config()
 const { body } = require("express-validator")
 const userController = require("../controllers/user")
-const tokenHandler = require("../handlers/tokenHandlers")
+const tokenHandler = require("../handlers/tokenHandler")
 
 const User = require("../models/user")
 const validation = require("../handlers/validation")
+//http://localhost:5001/api/v1/auth/register
+
 //ユーザー新規登録API
 router.post(
   "/register",

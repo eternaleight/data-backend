@@ -1,9 +1,15 @@
 const express = require("express")
 const mongoose = require("mongoose")
-
 const app = express()
+const cors = require("cors")
+
 app.use(express.json())
-app.use("/api/v1", require("./src/v1/routes/auth"))
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+)
+app.use("/api/v1", require("./src/v1/routes"))
 
 //DB接続
 try {
