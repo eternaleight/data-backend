@@ -4,11 +4,7 @@ const app = express()
 const cors = require("cors")
 
 app.use(express.json())
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-  })
-)
+app.use(cors())
 app.use("/api/v1", require("./src/v1/routes"))
 
 //DB接続
@@ -19,7 +15,7 @@ try {
   console.log(error)
 }
 
-const PORT = 5001
+const PORT = process.env.PORT || 5001
 app.listen(PORT, () => {
   console.log("localhost:" + PORT + "を起動中")
 })
